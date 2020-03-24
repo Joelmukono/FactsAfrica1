@@ -26,6 +26,7 @@ import com.example.vendor.network.FactsAfricaClient;
 import com.example.vendor.ui.MakeInvoiceActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,6 +47,8 @@ public class HomeFragment extends Fragment {
     TextView mCountRows;
     private List<Invoice> invoices;  //invoice list
     VendorInvoiceAdapter adapter;
+    private List<Invoice> addedInvoice = new ArrayList<>();
+    private Invoice invoice;
 
     private HomeViewModel homeViewModel;
     private View rootView;
@@ -87,7 +90,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -100,11 +103,11 @@ public class HomeFragment extends Fragment {
 
             switch (direction){
                 case ItemTouchHelper.LEFT:
+                    invoice = invoices.get(position);
+                    addedInvoice.add(invoice);
                     invoices.remove(position);
                     adapter.notifyItemRemoved(position);
-
-                    break;
-                case ItemTouchHelper.RIGHT:
+                    Toast.makeText(getContext(),"Item added to batch",Toast.LENGTH_LONG).show();
 
                     break;
 
