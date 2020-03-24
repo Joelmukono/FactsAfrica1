@@ -10,6 +10,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vendor.R;
@@ -81,7 +82,17 @@ public class VendorInvoiceAdapter extends RecyclerView.Adapter<VendorInvoiceAdap
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.invoices_list, parent, false);
         VendorInvoiceViewHolder viewHolder = new VendorInvoiceViewHolder(view);
         return viewHolder;
+
+
     }
+
+
+
+
+
+
+
+
 
     @Override
     public void onBindViewHolder(@NonNull VendorInvoiceAdapter.VendorInvoiceViewHolder holder, int position) {

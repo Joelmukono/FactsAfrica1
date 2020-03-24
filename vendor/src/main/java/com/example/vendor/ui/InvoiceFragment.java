@@ -25,10 +25,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vendor.R;
 import com.example.vendor.db.InvoiceContract;
@@ -133,7 +136,16 @@ public class InvoiceFragment extends Fragment implements View.OnClickListener {
 
 
         };
+
+
+
+
+
     }
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,10 +166,13 @@ public class InvoiceFragment extends Fragment implements View.OnClickListener {
         mAddPhotoToInvoice.setOnClickListener(this);
         mSubmitInvoice.setOnClickListener(this);
         mBusinessName.setOnClickListener(this);
-        displayDatabaseInfo();
+//        displayDatabaseInfo();
 
         return rootView;
     }
+
+
+
 
     @Override
     public void onStart() {

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,10 +41,11 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
     private String token;
     private SharedPreferences mPreference;
-    @BindView(R.id.homeVendor) RecyclerView mInvoicesRecycler;
+    @BindView(R.id.homeVendor) RecyclerView mInvoicesRecycler; //recycler view
     @BindView(R.id.count_rows)
     TextView mCountRows;
-    private List<Invoice> invoices;
+    private List<Invoice> invoices;  //invoice list
+    VendorInvoiceAdapter adapter;
 
     private HomeViewModel homeViewModel;
     private View rootView;
@@ -78,8 +80,38 @@ public class HomeFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         getAllInvoices();
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(mInvoicesRecycler);
+
         return rootView;
     }
+
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            int position = viewHolder.getAdapterPosition();
+
+            switch (direction){
+                case ItemTouchHelper.LEFT:
+                    invoices.remove(position);
+                    adapter.notifyItemRemoved(position);
+
+                    break;
+                case ItemTouchHelper.RIGHT:
+
+                    break;
+
+            }
+
+        }
+    };
 
 
 
@@ -93,8 +125,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Invoice>> call, Response<List<Invoice>> response) {
                 invoices = response.body();
-                Log.d(TAG, "onResponse: "+invoices.get(0).getInvoiceAmount());
-                VendorInvoiceAdapter adapter = new VendorInvoiceAdapter(invoices, rootView.getContext());
+//                Log.d(TAG, "onResponse: "+invoices.get(0).getInvoiceAmount());
+                adapter = new VendorInvoiceAdapter(invoices, rootView.getContext());
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
                 mInvoicesRecycler.setLayoutManager(layoutManager);
                 mInvoicesRecycler.setHasFixedSize(true);
